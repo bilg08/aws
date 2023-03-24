@@ -1,0 +1,26 @@
+service: threelambdafunction
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action: "lambda:InvokeFunction"
+        - Effect: "Allow"
+          Resource: "*"
+          Action: "logs:DescribeLogStreams"
+        - Effect: "Allow"
+          Resource: "*"
+          Action: "logs:FilterLogEvents"
+          
+functions:
+  firstFunction:
+    handler: index.firstFunction
+  secondFunction:
+    handler: index.secondFunction
+  thirdFunction:
+    handler: index.thirdFunction
