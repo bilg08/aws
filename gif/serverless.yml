@@ -1,0 +1,19 @@
+service: gif
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action: "lambda:InvokeFunction"
+
+
+functions:
+  caller:
+    handler: index.caller
+  receiver:
+    handler: index.receiver
