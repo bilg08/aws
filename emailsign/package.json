@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.300.0",
+    "@aws-sdk/util-dynamodb": "^3.300.0",
+    "aws-sdk": "^2.1344.0",
+    "bcryptjs": "^2.4.3",
+    "nodemailer": "^6.9.1",
+    "nodemailer-smtp-transport": "^2.7.4"
+  }
+}

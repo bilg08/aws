@@ -1,0 +1,20 @@
+service: dynamodbgif
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action: "lambda:InvokeFunction"
+        - Effect: "Allow"
+          Resource: "*"
+          Action: 
+            - 'dynamodb:*'
+       
+functions:
+  function1:
+    handler: index.handler

@@ -1,0 +1,28 @@
+service: emailsign
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action: "lambda:InvokeFunction"
+        - Effect: "Allow"
+          Resource: "*"
+          Action:
+          - 'dynamodb:*'
+
+functions:
+  signup:
+    handler: index.signup
+  sendemail:
+    handler: index.sendemail
+    events: 
+      - stream: 
+          type: dynamodb
+          arn: arn:aws:dynamodb:us-east-1:826192565530:table/users/stream/2023-03-28T04:11:12.747
+          batchSize: 10
+          startingPosition: LATEST
