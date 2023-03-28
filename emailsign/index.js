@@ -22,24 +22,22 @@ module.exports.signup = async (event) => {
 };
 module.exports.sendemail = async (event) => {
   const email = event?.Records[0]?.dynamodb?.NewImage?.email?.S;
-  let transporter = nodemailer.createTransport(smtpTransport(
-    {
-      service: 'gmail',
-      secure: true,
-      auth: {
-        user: 'bizozobi30@gmail.com',
-        pass: 'qhuadcltdaboceoe',
-      },
-    }
-  ));
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "bizozobi30@gmail.com", // generated ethereal user
+      pass: "qhuadcltdaboceoe", // generated ethereal password
+    },
+  });
+  //qhuadcltdaboceoe
   let mailOptions = {
     from: 'bizozobi30@gmail.com',
     to: email,
     subject: 'Sending Email using Node.js[nodemailer]',
     text: 'That was easy!'
   };
-  transporter.sendMail(mailOptions,(err, data) => {
-   console.log(err,data)
-  })
-  return '1';
+  const info = await transporter.sendMail(mailOptions)
+  return info.messageId;
 };
