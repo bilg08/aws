@@ -17,4 +17,10 @@ provider:
        
 functions:
   function1:
-    handler: index.handler
+    handler: index.handler1
+    events:
+      - http: POST gif
+  function2:
+    handler: index.handler2
+    events:
+      - http: GET gif
