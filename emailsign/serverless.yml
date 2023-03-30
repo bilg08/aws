@@ -16,13 +16,11 @@ provider:
           - 'dynamodb:*'
 
 functions:
-  signup1:
+  signup:
     handler: index.signup
-  sendemail1:
-    handler: index.sendemail
-    events: 
-      - stream: 
-          type: dynamodb
-          arn: arn:aws:dynamodb:us-east-1:826192565530:table/users/stream/2023-03-28T05:41:41.247
-          batchSize: 10
-          startingPosition: LATEST
+    events:
+      - http: POST signup
+  signin:
+    handler: index.signin
+    events:
+      - http: POST signin
