@@ -1,0 +1,41 @@
+service: registerAttendance
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action: "lambda:InvokeFunction"
+        - Effect: "Allow"
+          Resource: "*"
+          Action:
+          - 'dynamodb:*'
+
+functions:
+  registerattendance:
+    handler: index.handler
+    events:
+      - http: 
+          path: registerattendance
+          method: POST
+          cors:
+            origin: "http://localhost:3000"
+            headers:
+              - "*"
+            allowCredentials: true
+  getAllAttendances:
+    handler: index.getAllAttendances
+    events:
+      - http:
+          path: attendances
+          method: GET
+          cors:
+            origin: "http://localhost:3000"
+            headers:
+              - "*"
+            allowCredentials: true
+          
