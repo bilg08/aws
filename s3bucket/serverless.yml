@@ -5,12 +5,12 @@ provider:
   name: aws
   runtime: nodejs16.x
 
-resources:
+resources: 
   Resources:
     BilguunBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: leap3devbilguunzs3
+        BucketName: zorigoobilguunleap3
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -21,16 +21,20 @@ resources:
                 - s3:PutObject
                 - s3:GetObject
               Resource:
-                - arn:aws:s3:::leap3devbilguunzs3/*
+                - arn:aws:s3:::zorigoobilguunleap3/*
               Effect: Allow
               Principal: "*"
 
 functions:
   function1:
-    handler: index.handler
+    handler: index.handler  
     events:
-      - http: 
-          path: s3
+      - http:
+          path: /
           method: GET
-
-
+          cors:
+            origin: "*"
+            headers:
+              - "*"
+            allowCredentials: true
+  
