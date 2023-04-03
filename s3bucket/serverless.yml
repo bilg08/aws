@@ -28,4 +28,9 @@ resources:
 functions:
   function1:
     handler: index.handler
+    events:
+      - http: 
+          path: s3
+          method: GET
+
 
