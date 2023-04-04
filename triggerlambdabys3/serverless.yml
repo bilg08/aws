@@ -4,6 +4,13 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs16.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action: 
+            - 's3:*'
 
 resources: 
   Resources:
@@ -27,9 +34,24 @@ resources:
 functions:
   function1:
     handler: index.get_s3_upload_url
-  function2:
-    handler: index.function_will_be_triggerd_by_s3
     events:
+      - http: 
+          path: /
+          method: POST
+          cors:
+            origin: '*'
+            headers:
+              - "*"
+  function2:
+    handler: index.getPhotos
+    events:
+      - http:
+          path: /
+          method: GET
+          cors:
+            origin: '*'
+            headers:
+              - "*"
       - s3:
           bucket: zorigoobilguunleap3triggers3
           event: s3:ObjectCreated:*

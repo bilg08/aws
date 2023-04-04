@@ -5,28 +5,40 @@ const {v4: uuidv4} = require('uuid');
 module.exports.get_s3_upload_url = async (event) => {
   const params = {
     Bucket: 'zorigoobilguunleap3triggers3',
-    Key: `${uuidv4()}.png`,
+    Key: `${uuidv4()}.${'png'}`,
     ContentType: 'image/png',
   };
   const uploadUrl = S3.getSignedUrl('putObject',params);
+  
   return {
     statusCode: 200,
-    body: JSON.stringify(
-      {
-        event,
-        uploadUrl,
-      },
-    ),
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      'Access-Control-Allow-Credentials': true,
+      "Access-Control-Allow-Methods": "POST,PUT"
+    },
+    body: JSON.stringify({
+      data: uploadUrl
+    })
   };
 };
-module.exports.function_will_be_triggerd_by_s3 = async (event) => {
-  const parsedEvent = JSON.parse(event);
+module.exports.getPhotos = async (event) => {
+  const bucket = `zorigoobilguunleap3triggers3`;
+  const objects = await S3.listObjectsV2({
+    Bucket: bucket
+  }).promise();
+  const links = objects.Contents.map(({Key}) => `https://${bucket}.s3.amazonaws.com/${Key}`);
   return {
     statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v3.0! Your function executed successfully!',
-      },
-    ),
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      'Access-Control-Allow-Credentials': true,
+
+    },
+    body: JSON.stringify({
+      data: links
+    })
   };
 };
