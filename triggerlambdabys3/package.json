@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "aws-sdk": "^2.1349.0",
+    "jsonwebtoken": "^9.0.0",
     "uuid": "^9.0.0"
   }
 }

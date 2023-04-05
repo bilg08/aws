@@ -19,8 +19,14 @@ functions:
   signup:
     handler: index.signup
     events:
-      - http: POST signup
+      - http:
+          path: /signup
+          method: POST
+          cors: true
   signin:
     handler: index.signin
     events:
-      - http: POST signin
+       - http:
+          path: /signin
+          method: POST
+          cors: true

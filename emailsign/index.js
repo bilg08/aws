@@ -38,6 +38,7 @@ module.exports.signin = async (event) => {
   const user = unmarshall(Item);
   const isPasswordRight = await bcrypt.compare(password, user.password);
   if (isPasswordRight) {
+    const hashedUser = jwt.sign(user, 'hash')
     return {
       statusCode: 200,
       headers: {
@@ -45,7 +46,7 @@ module.exports.signin = async (event) => {
         "Access-Control-Allow-Headers": "*"
       },
       body: JSON.stringify({
-        data: user
+        data: hashedUser
       })
     };
   } else {
