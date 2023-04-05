@@ -18,6 +18,16 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: zorigoobilguunleap3triggers3
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - PUT
+                - GET
+                - POST
+              AllowedOrigins:
+                - '*'
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -38,20 +48,14 @@ functions:
       - http: 
           path: /
           method: POST
-          cors:
-            origin: '*'
-            headers:
-              - "*"
+          cors: true
   function2:
     handler: index.getPhotos
     events:
       - http:
           path: /
           method: GET
-          cors:
-            origin: '*'
-            headers:
-              - "*"
+          cors: true
       - s3:
           bucket: zorigoobilguunleap3triggers3
           event: s3:ObjectCreated:*

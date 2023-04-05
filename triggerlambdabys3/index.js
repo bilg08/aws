@@ -3,10 +3,13 @@ const S3 = new Aws.S3();
 const {v4: uuidv4} = require('uuid');
 
 module.exports.get_s3_upload_url = async (event) => {
+  const parsedBody = JSON.parse(event.body);
+  const {ContentType} = parsedBody;
+  const ext = ContentType.split('/');
   const params = {
     Bucket: 'zorigoobilguunleap3triggers3',
-    Key: `${uuidv4()}.${'png'}`,
-    ContentType: 'image/png',
+    Key: `${uuidv4()}.${ext}`,
+    ContentType: ContentType,
   };
   const uploadUrl = S3.getSignedUrl('putObject',params);
   
@@ -15,8 +18,6 @@ module.exports.get_s3_upload_url = async (event) => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
-      'Access-Control-Allow-Credentials': true,
-      "Access-Control-Allow-Methods": "POST,PUT"
     },
     body: JSON.stringify({
       data: uploadUrl
@@ -34,8 +35,6 @@ module.exports.getPhotos = async (event) => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*",
-      'Access-Control-Allow-Credentials': true,
-
     },
     body: JSON.stringify({
       data: links
