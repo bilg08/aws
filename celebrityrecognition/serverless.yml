@@ -1,0 +1,66 @@
+service: celebrityrecognition
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action:
+            - 's3:*'
+            - rekognition:DetectText
+            - rekognition:StartCelebrityRecognition
+            - rekognition:RecognizeCelebrities
+            - rekognition:GetCelebrityInfo
+resources: 
+  Resources:
+    BilguunCelebBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: zorigoobilguunleap3celebritydetection
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - PUT
+                - GET
+                - POST
+              AllowedOrigins:
+                - '*'
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref BilguunCelebBucket
+        PolicyDocument:
+          Statement:
+            - Action:
+                - s3:PutObject
+                - s3:GetObject
+              Resource:
+                - arn:aws:s3:::zorigoobilguunleap3celebritydetection/*
+              Effect: Allow
+              Principal: "*"
+functions:
+  uploadImage:
+    handler: index.uploadImage
+    events:
+      - http:
+          path: /
+          method: POST
+          cors: true
+  detectCelebrity:
+    handler: index.detectCelebrity
+    events:
+      - http:
+          path: /
+          method: GET
+          cors: true
+      - s3:
+          bucket: zorigoobilguunleap3celebritydetection
+          event: s3:ObjectCreated:*
+          existing: true
+    
